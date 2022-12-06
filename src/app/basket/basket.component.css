@@ -1,0 +1,27 @@
+.productbox{
+    padding: 15px;
+    margin:10px;
+}
+img {
+    width :200px;
+    height: 200px;
+    object-fit: cover;;
+}
+
+.card-input-element {
+  
+    display: none;
+}
+
+.card-input {
+    margin: 10px;
+    padding: 0px;
+}
+
+.card-input:hover {
+    cursor: pointer;
+}
+
+.card-input-element:checked + .card-input {
+     box-shadow: 0 0 1px 1px #5eff;
+}

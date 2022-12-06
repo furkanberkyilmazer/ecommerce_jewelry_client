@@ -1,0 +1,29 @@
+
+<div class="container " >
+<div class="row justify-content-md-center">
+  <div class="col-sm-6">
+    <div class="card m-3" *ngFor="let item of orders ">
+      <div class="card-body">
+        <div class="row p-1" >
+               
+         <p class="card-text">Sipariş Tarihi: {{item.createdDate}}</p>
+          </div> 
+       
+        
+       <app-orders-product [productId]=item.productId></app-orders-product>
+       <p class="card-text"></p> 
+        
+       <div class="row p-3">
+        <div class="col-sm-3"><p class="card-text">Adet: {{item.piece}}</p></div>
+        <div class="col-sm-3"><p class="card-text">Ödenen Tutar: {{item.price}}</p></div>
+       
+       </div>
+       <div class="row ">
+        <app-orders-address [addressId]=item.addressId></app-orders-address>
+       </div>
+  
+      </div>
+    </div>
+  </div>
+
+</div>

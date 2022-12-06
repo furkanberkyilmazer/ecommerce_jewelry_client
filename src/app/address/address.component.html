@@ -1,0 +1,18 @@
+<div  class="container card mb-3 text-center" style="max-width: 540px; margin-top: 10%;">
+    <div class="row g-0">
+      
+     
+        <div class="card-body">
+         
+         <div *ngFor="let item of addresses"> <div class="card-header">{{item.title}}</div>
+         <div class="card-body">
+           <p>{{item.content}}</p> 
+           <p>{{item.province}} / {{item.district}}</p>
+         </div></div> 
+         
+         
+          <!-- <a (click)="addToCart(products)" class="btn btn-primary">Sepete Ekle</a> -->
+        </div>
+      
+    </div>
+  </div>

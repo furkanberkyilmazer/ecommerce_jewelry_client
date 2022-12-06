@@ -1,0 +1,185 @@
+
+<link href="/docs/5.0/assets/css/docs.css" rel="stylesheet">
+ <div class="modal position-static d-block" *ngIf="basketContents.length>0" >
+
+
+    <!-- <app-basket-products [totalPrice]='totalPrice'  [basketContents]='basketContents'> </app-basket-products> -->
+    <div class="card text-center m-2">
+      <div class="card-header">
+        Sepet İçeriği
+      </div>
+      <div class="card-body">
+        <h5 class="card-title" ></h5>
+        <p class="card-text" *ngFor="let content of basketContents"> Ürün Adı: {{content.name}}   |  Adet: {{content.piece}}</p>
+        <p class="card-text" >Toplam Sepet Tutarı: {{totalPrice}}</p>
+        <a  class="btn btn-primary" [class.disabled]="isDisabled" (click)="openOrderModal()">Sepeti Onayla</a>
+      </div>
+      <div class="card-footer text-muted">
+        
+      </div>
+    </div>
+  
+  
+ <div class="row m-2">
+   <div *ngFor="let content of basketContents " class="productbox card" style="width: 16rem;" routerLink="productdetails/{{content.productId}}"> 
+    <!-- <p class="card-text" *ngIf="stockControlFlag == false">stokta bu kadar ürün yok</p> -->
+    <img src={{content.imageUrl}} class="card-img-top m-1" alt="...">
+    <div class="card-body">
+      <h5 class="card-title">{{content.name }} {{content.pcsprice | currency:'USD':'symbol':"1.2-2"}}    </h5>
+      <p class="card-text">   Adet: {{content.piece}} </p>
+      <p class="card-text">{{content.description}}</p>
+      <div *ngIf="content.stockControl==false" style="color:red ;"><p class="card-text">Stokta bu kadar ürün bulunmamakta.</p></div>
+     
+      <!-- *ngIf="stockControl(content.productId , content.piece)==false" -->
+     
+    </div>
+    <div class="modal-footer">
+          
+      <div class = "col">Toplam Tutar: {{content.price}} </div>
+    
+              
+      <div clas="col"><button type="button" class="btn btn-primary" data-bs-toggle="modal"  (click)="openModal(content.basketId,content.productId)">
+      Düzenle
+      </button></div> 
+          <div clas="col"><button type="button" class="btn btn-danger" data-bs-dismiss="Danger" (click)="deleteBasket(content.basketId)"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+            <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+          </svg></button></div>   
+       
+     </div>
+  
+</div>
+</div>
+
+   </div> 
+
+
+
+    <div *ngIf="basketContents.length==0">
+     sepet boş
+    </div>   
+
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">Sepeti Düzenle</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+
+            <div  class="container card mb-3 text-center" style="max-width: 540px; margin-top: 10%;">
+              <div class="row g-0">
+                <div class="col-md-4">
+                  <img src="{{product.imageUrl}}" class="img-fluid rounded-start" alt="{{product.name}}">
+                </div>
+                <div class="col-md-8">
+                  <div class="card-body">
+                    <h5 class="card-title">{{product.name}} {{product.price | currency:'USD':'symbol':"1.2-2"}}</h5>
+                    <p class="card-text">{{product.description}}</p>
+                    
+                    <p class="card-text"><small class="text-muted">Stokta: {{product.stock}}</small></p>
+                    <p class="card-text"><small class="text-muted">Sepetteki Adet: {{basket.piece}}</small></p>
+                  
+                  
+                      <select  class="form-select mb-3 " aria-label="Default select example" #piece="ngModel" [(ngModel)]="pieceValue" name="piece" id="piece" required>
+                        <option selected> {{basket.piece}}</option>
+                        <option  *ngFor="let result of pieceArray">{{result}}</option>
+              
+                      </select>
+                    
+               
+                    
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >Close</button>
+            <button type="button" class="btn btn-primary"  (click)="add()" >Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+ 
+    <div class="modal fade" id="orderModal" tabindex="-1" aria-labelledby="orderModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="orderModalLabel">Sipariş Oluştur</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+           <div class="modal-body">
+
+            <div  class="container card mb-3 text-center" style="max-width: 540px; margin-top: 10%;">
+              <div >
+                 
+                <div class="card text-center m-2">
+                 <div class="card-header">
+                   Sepet İçeriği
+                 </div>
+                 <div class="card-body">
+                   <h5 class="card-title" ></h5>
+                   <p class="card-text" *ngFor="let content of basketContents"> Ürün Adı: {{content.name}}   |  Adet: {{content.piece}}</p>
+                   <p class="card-text" >Toplam Sepet Tutarı: {{totalPrice}}</p>
+                  
+                 </div>
+                 <div class="card-footer text-muted">
+                   
+                 </div>
+               </div>
+             
+        
+             </div>
+              <div class="row g-0">
+              
+               
+                  <div class="card-body">
+                    
+                    <p class="card-text">Adres Seçimi:</p>
+
+                  
+                 
+                      <div class="row">
+    
+                        <div *ngFor="let result of address"> <!--  class="col-md-4 col-lg-4 col-sm-4" -->
+                          
+                          <label>
+                            <input type="radio" name="product" value="{{result.id}}" [(ngModel)]="addressId" selected checked class="card-input-element" />
+                  
+                              <div class="card card-default card-input">
+                                <div class="card-header">{{result.title}}</div>
+                                <div class="card-body">
+                                  <p>{{result.content}}</p> 
+                                  <p>{{result.province}} / {{result.district}}</p>
+                                </div>
+                              </div>
+                  
+                          </label>
+                          
+                        </div>
+            
+            
+                    </div>
+                    
+               
+                    
+                  </div>
+         
+              </div>
+            </div>
+
+
+          </div> 
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >Close</button>
+            <button type="submit"  class="btn btn-primary"  (click)="createOrder()" >Siparişi Tamamla</button>
+          </div>
+        </div>
+      </div>
+    </div>
